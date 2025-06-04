@@ -1,0 +1,59 @@
+name: Build Microsandbox with GLIBC 2.28
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Use the latest Ubuntu runner provided by GitHub Actions.
+    # We will run our Docker container on this runner.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        # Action to checkout your repository's code.
+        # This makes the microsandbox source code available to the runner.
+        uses: actions/checkout@v4
+
+      - name: Build and Run in Docker Container
+        run: |
+          echo "Building Docker image for GLIBC 2.28 environment..."
+          # Build the Docker image from the Dockerfile in the current directory.
+          # The image is tagged as 'microsandbox-glibc228-builder'.
+          docker build -t microsandbox-glibc228-builder -f Dockerfile .
+
+          echo "Running build commands inside the Docker container..."
+          # Run the Docker container.
+          # -v $(pwd):/app: Mounts the current GitHub repository directory (where your code is)
+          #                 to the /app directory inside the Docker container.
+          # -w /app: Sets the working directory inside the container to /app.
+          # microsandbox-glibc228-builder: Specifies the Docker image to use.
+          # bash -c "...": Executes the build commands within the container.
+          docker run \
+            -v "$(pwd)":/app \
+            -w /app \
+            microsandbox-glibc228-builder \
+            bash -c " \
+              echo 'Verifying GLIBC version inside container:' && \
+              ldd --version && \
+              echo 'Starting make build...' && \
+              # Run the 'make' command.
+              # -j$(nproc) uses all available CPU cores for faster compilation.
+              make -j$(nproc) && \
+              echo 'Build completed successfully!' \
+            "
+      # Optional: If you want to upload the compiled binary as an artifact.
+      # This makes the built executable available for download from the GitHub Actions run.
+      # - name: Upload compiled binary
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: microsandbox-binary
+      #     # Adjust this path if your executable is named differently or in a subdirectory.
+      #     # Based on the microsandbox Makefile, the executable is named 'microsandbox'
+      #     # and is created in the root directory.
+      #     path: microsandbox

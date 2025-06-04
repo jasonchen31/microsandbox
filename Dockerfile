@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # git is included for general development, though not strictly required if source is mounted.
 RUN apt-get update && \
     apt-get install -y \
-    build-essential \
+    build-essential patchelf bc libelf-dev flex bison python3 curl \
     git \
     # Clean up apt caches to reduce image size
     && apt-get clean \

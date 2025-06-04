@@ -8,13 +8,28 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update the package list and install essential build tools.
 # build-essential provides gcc, g++, make, libc-dev, etc.
 # git is included for general development, though not strictly required if source is mounted.
+# python3 and python3-pip are added for Python 3 and its package installer.
+# patchelf, bc, libelf-dev, flex, bison, and curl are added as requested.
 RUN apt-get update && \
     apt-get install -y \
-    build-essential patchelf bc libelf-dev flex bison python3 curl \
+    build-essential \
     git \
+    python3 \
+    python3-pip \
+    patchelf \
+    bc \
+    libelf-dev \
+    flex \
+    bison \
+    curl \
     # Clean up apt caches to reduce image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install pyelftools using pip3.
+# pyelftools is a Python library for analyzing ELF files, which might be relevant
+# for projects dealing with executables and their structure.
+RUN pip3 install pyelftools
 
 # (Optional) Verify the GLIBC version within the container.
 # This command will print the GLIBC version when the container starts or when run manually.

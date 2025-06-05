@@ -31,6 +31,9 @@ RUN apt-get update && \
 # for projects dealing with executables and their structure.
 RUN pip3 install pyelftools
 
+# install cargo and Rust
+RUN curl https://sh.rustup.rs -sSf | sh
+
 # (Optional) Verify the GLIBC version within the container.
 # This command will print the GLIBC version when the container starts or when run manually.
 # It's commented out by default but useful for debugging.

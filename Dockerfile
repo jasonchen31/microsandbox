@@ -11,6 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # -y: Disable confirmation prompt (answer "yes" to all questions)
 # --no-modify-path: Do not modify the PATH environment variable in the shell's profile files.
 #                   We'll set PATH explicitly in the Dockerfile.
+RUN apt-get install curl
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 ENV CARGO_HOME="$HOME/.cargo"
 ENV PATH="$CARGO_HOME/bin:$PATH"

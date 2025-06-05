@@ -31,8 +31,18 @@ RUN apt-get update && \
 # for projects dealing with executables and their structure.
 RUN pip3 install pyelftools
 
-# install cargo and Rust
-#RUN curl https://sh.rustup.rs -sSf | sh -y # not working
+# Set environment variables for Cargo and Rustup
+# This makes `cargo` and `rustc` available in subsequent RUN commands and when the container runs.
+ENV CARGO_HOME="/usr/local/cargo"
+ENV RUSTUP_HOME="/usr/local/rustup"
+ENV PATH="$CARGO_HOME/bin:$PATH"
+
+# (Optional) Clean up downloaded installer to reduce image size
+RUN rm /usr/local/cargo/bin/rustup-init
+
+# Example: Verify installation
+RUN rustc --version
+RUN cargo --version
 
 # (Optional) Verify the GLIBC version within the container.
 # This command will print the GLIBC version when the container starts or when run manually.

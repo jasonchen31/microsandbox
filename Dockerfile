@@ -38,7 +38,6 @@ RUN apt-get install -y \
     curl \
     clang \
     libclang-dev \
-    python3-clang \
     # Clean up apt caches to reduce image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

@@ -14,6 +14,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 ENV CARGO_HOME="$HOME/.cargo"
 ENV PATH="$CARGO_HOME/bin:$PATH"
+RUN find / -name rustc
+RUN find / -name cargo
 RUN rustc --version
 RUN cargo --version
 

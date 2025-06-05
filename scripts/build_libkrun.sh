@@ -200,8 +200,10 @@ export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
 
 # Set up variables
 BUILD_DIR="$ORIGINAL_DIR/build"
-LIBKRUNFW_REPO="https://github.com/microsandbox/libkrunfw.git"
-LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
+#LIBKRUNFW_REPO="https://github.com/microsandbox/libkrunfw.git"
+#LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
+LIBKRUNFW_REPO="https://github.com/containers/libkrunfw.git"
+LIBKRUN_REPO="https://github.com/containers/libkrun.git"
 NO_CLEANUP=false
 FORCE_BUILD=false
 

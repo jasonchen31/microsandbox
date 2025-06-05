@@ -281,8 +281,8 @@ check_existing_lib() {
 
     # Check if the library's source folder exists
     if [ ! -d "$BUILD_DIR/$lib_name" ]; then
-        error "Library source folder not found: $lib_folder. Cannot check for existing build."
-        return 1 # Indicate failure directly
+        info "Library source folder not found: $lib_folder. Cannot check for existing build."
+        return 0 # Indicate no such directory, build it directly
     fi
 
     # Get ABI version from the appropriate Makefile

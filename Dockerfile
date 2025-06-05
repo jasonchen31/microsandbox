@@ -32,7 +32,7 @@ RUN apt-get update && \
 RUN pip3 install pyelftools
 
 # install cargo and Rust
-RUN curl https://sh.rustup.rs -sSf | sh
+#RUN curl https://sh.rustup.rs -sSf | sh -y # not working
 
 # (Optional) Verify the GLIBC version within the container.
 # This command will print the GLIBC version when the container starts or when run manually.
@@ -41,6 +41,7 @@ RUN curl https://sh.rustup.rs -sSf | sh
 
 # Set the working directory inside the container.
 # The project source code will be mounted into this directory by GitHub Actions.
+RUN mkdir /app && mkdir /app/build
 WORKDIR /app
 
 # The Docker image is now ready. The actual build commands will be run by GitHub Actions

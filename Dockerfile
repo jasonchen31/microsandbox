@@ -37,12 +37,12 @@ RUN pip3 install pyelftools
 # -y: Disable confirmation prompt (answer "yes" to all questions)
 # --no-modify-path: Do not modify the PATH environment variable in the shell's profile files.
 #                   We'll set PATH explicitly in the Dockerfile.
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y #--no-modify-path
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 # Set environment variables for Cargo and Rustup
 # This makes `cargo` and `rustc` available in subsequent RUN commands and when the container runs.
-#ENV CARGO_HOME="/usr/local/cargo"
-#ENV RUSTUP_HOME="/usr/local/rustup"
-#ENV PATH="$CARGO_HOME/bin:$PATH"
+ENV CARGO_HOME="/usr/local/cargo"
+ENV RUSTUP_HOME="/usr/local/rustup"
+ENV PATH="$CARGO_HOME/bin:$PATH"
 
 # Example: Verify installation
 RUN rustc --version

@@ -279,10 +279,10 @@ check_existing_lib() {
 
     local lib_name="$1"
 
-    # Check if the library's source folder exists
-    if [ ! -d "$BUILD_DIR/$lib_name" ]; then
+    # Check if the library's Makefile exists
+    if [ ! -f "$BUILD_DIR/$lib_name/Makefile" ]; then
         info "Library source folder not found: $lib_folder. Cannot check for existing build."
-        return 0 # Indicate no such directory, build it directly
+        return 0 # Indicate no Makefile cloned yet, build it directly
     fi
 
     # Get ABI version from the appropriate Makefile
@@ -455,14 +455,14 @@ build_libkrun() {
 check_existing_lib "libkrunfw"
 if [ $? -eq 0 ]; then
     create_build_directory
-    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch develop
+    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch v4.9.0
     build_libkrunfw
 fi
 
 check_existing_lib "libkrun"
 if [ $? -eq 0 ]; then
     create_build_directory
-    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch develop
+    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch v1.13.0
     build_libkrun
 fi
 

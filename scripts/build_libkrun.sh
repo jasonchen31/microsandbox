@@ -203,8 +203,8 @@ BUILD_DIR="$ORIGINAL_DIR/build"
 LIBKRUNFW_REPO="https://github.com/microsandbox/libkrunfw.git"
 #LIBKRUNFW_REPO="https://github.com/containers/libkrunfw.git"
 
-#LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
-LIBKRUN_REPO="https://github.com/containers/libkrun.git"
+LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
+#LIBKRUN_REPO="https://github.com/containers/libkrun.git"
 
 NO_CLEANUP=false
 FORCE_BUILD=false
@@ -475,8 +475,8 @@ build_libkrun() {
 check_existing_lib "libkrun"
 if [ $? -eq 0 ]; then
     create_build_directory
-    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch v1.13.0
-    #clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch develop
+    #clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch v1.13.0
+    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch develop
     build_libkrun
 fi
 

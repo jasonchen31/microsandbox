@@ -36,9 +36,14 @@ RUN apt-get install -y \
     flex \
     bison \
     curl \
+    clang \
+    libclang-dev \
+    python3-clang \
     # Clean up apt caches to reduce image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN clang --version
 
 # Install pyelftools using pip3.
 # pyelftools is a Python library for analyzing ELF files, which might be relevant

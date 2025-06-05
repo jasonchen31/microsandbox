@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #                   We'll set PATH explicitly in the Dockerfile.
 RUN apt-get update && apt-get install -y curl
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y 
-#ENV CARGO_HOME="$HOME/.cargo"
+#ENV CARGO_HOME="/root/.cargo"
 #ENV PATH="$CARGO_HOME/bin:$PATH"
 RUN find / -name rustc
 RUN find / -name cargo

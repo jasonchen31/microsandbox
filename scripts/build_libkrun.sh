@@ -200,10 +200,10 @@ export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
 
 # Set up variables
 BUILD_DIR="$ORIGINAL_DIR/build"
-#LIBKRUNFW_REPO="https://github.com/microsandbox/libkrunfw.git"
-#LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
-LIBKRUNFW_REPO="https://github.com/containers/libkrunfw.git"
-LIBKRUN_REPO="https://github.com/containers/libkrun.git"
+LIBKRUNFW_REPO="https://github.com/microsandbox/libkrunfw.git"
+LIBKRUN_REPO="https://github.com/microsandbox/libkrun.git"
+#LIBKRUNFW_REPO="https://github.com/containers/libkrunfw.git"
+#LIBKRUN_REPO="https://github.com/containers/libkrun.git"
 NO_CLEANUP=false
 FORCE_BUILD=false
 
@@ -434,16 +434,32 @@ build_libkrun() {
     cd "$BUILD_DIR" || { error "Failed to change to build directory"; exit 1; }
     case "$OS_TYPE" in
         Linux)
-            cp libkrun/target/release/libkrun.so.$full_version "libkrun.so.$abi_version"
-            patchelf --set-rpath '$ORIGIN' "libkrun.so.$abi_version"
-            patchelf --set-needed "libkrunfw.so.4" "libkrun.so.$abi_version"
-            ln -sf "libkrun.so.$abi_version" "libkrun.so"
+            local source_lib="libkrun/target/release/libkrun.so.$full_version"
+            local dest_lib="libkrun.so.$abi_version"
+            cp "$source_lib" "$dest_lib"
+            if [ -f "$dest_lib" ]; then
+                patchelf --set-rpath '$ORIGIN' "$dest_lib"
+                patchelf --set-needed "libkrunfw.so.4" "$dest_lib"
+                ln -sf "$dest_lib" "libkrun.so"
+            else
+                error "Copied library from $source_lib to $dest_lib faile, dest not found. Skipping patchelf and symlink."
+                find . $source_lib
+                find . $dest_lib
+                exit 1
+            fi
             ;;
         Darwin)
-            cp libkrun/target/release/libkrun.$full_version.dylib "libkrun.$abi_version.dylib"
-            install_name_tool -id "@rpath/libkrun.$abi_version.dylib" "libkrun.$abi_version.dylib"
-            install_name_tool -change "libkrunfw.4.dylib" "@rpath/libkrunfw.4.dylib" "libkrun.$abi_version.dylib"
-            ln -sf "libkrun.$abi_version.dylib" "libkrun.dylib"
+            local source_lib="libkrun/target/release/libkrun.$full_version.dylib"
+            local dest_lib="libkrun.$abi_version.dylib"
+            cp "$source_lib" "$dest_lib"
+            if [ -f "$dest_lib" ]; then
+                install_name_tool -id "@rpath/$dest_lib" "$dest_lib"
+                install_name_tool -change "libkrunfw.4.dylib" "@rpath/libkrunfw.4.dylib" "$dest_lib"
+                ln -sf "$dest_lib" "libkrun.dylib"
+            else
+                error "Copied library $dest_lib not found. Skipping install_name_tool and symlink."
+                exit 1
+            fi
             ;;
         *)
             error "Unsupported OS: $OS_TYPE"
@@ -457,14 +473,16 @@ build_libkrun() {
 check_existing_lib "libkrunfw"
 if [ $? -eq 0 ]; then
     create_build_directory
-    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch v4.9.0
+    #clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch v4.9.0
+    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch develop
     build_libkrunfw
 fi
 
 check_existing_lib "libkrun"
 if [ $? -eq 0 ]; then
     create_build_directory
-    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch v1.13.0
+    #clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch v1.13.0
+    clone_repo "$LIBKRUN_REPO" "libkrun" --single-branch --branch develop
     build_libkrun
 fi
 

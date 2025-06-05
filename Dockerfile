@@ -31,6 +31,13 @@ RUN apt-get update && \
 # for projects dealing with executables and their structure.
 RUN pip3 install pyelftools
 
+# Install Rust and Cargo non-interactively
+# -s: Read commands from standard input
+# --: Treat all subsequent arguments as non-options (for the script)
+# -y: Disable confirmation prompt (answer "yes" to all questions)
+# --no-modify-path: Do not modify the PATH environment variable in the shell's profile files.
+#                   We'll set PATH explicitly in the Dockerfile.
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 # Set environment variables for Cargo and Rustup
 # This makes `cargo` and `rustc` available in subsequent RUN commands and when the container runs.
 ENV CARGO_HOME="/usr/local/cargo"

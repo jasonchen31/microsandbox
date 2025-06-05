@@ -58,7 +58,7 @@ RUN pip3 install pyelftools
 
 # Set the working directory inside the container.
 # The project source code will be mounted into this directory by GitHub Actions.
-RUN mkdir /app && mkdir /app/build
+RUN mkdir /app && mkdir /app/build && mkdir /app/build/target && mkdir /app/build/release
 WORKDIR /app
 
 # The Docker image is now ready. The actual build commands will be run by GitHub Actions

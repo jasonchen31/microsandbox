@@ -483,8 +483,8 @@ fi
 check_existing_lib "libkrunfw"
 if [ $? -eq 0 ]; then
     create_build_directory
-    #clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch v4.9.0
-    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch develop
+    clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch v4.9.0
+    #clone_repo "$LIBKRUNFW_REPO" "libkrunfw" --single-branch --branch develop
     build_libkrunfw
 fi
 

@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # --no-modify-path: Do not modify the PATH environment variable in the shell's profile files.
 #                   We'll set PATH explicitly in the Dockerfile.
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
-RUN source "$HOME/.cargo/env"
+RUN . "$HOME/.cargo/env"
 RUN rustc --version
 RUN cargo --version
 

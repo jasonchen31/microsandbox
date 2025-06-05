@@ -40,8 +40,6 @@ RUN apt-get install -y \
     libclang-dev \
     pkg-config \
     libssl-dev \
-    openssl \
-    openssh \
     # Clean up apt caches to reduce image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
